@@ -68,12 +68,23 @@ select.status option:checked{background:#1d1608;color:var(--gold2)}
 
 @media(max-width:820px){
   thead{display:none}
-  table,tbody,tr,td{display:block;width:100%}
-  tbody tr{padding:14px 4px;border-bottom:1px solid #1a1a1a}
-  td{padding:4px 0;border:0}
-  td:not(.cell-actions):before{content:attr(data-label);display:block;font:600 9px/1 'Jost',sans-serif;letter-spacing:1px;text-transform:uppercase;color:#555;margin-bottom:3px}
-  .cell-msg{max-width:100%;white-space:normal}
-  .cell-actions{margin-top:6px}
+  table,tbody{display:block;width:100%}
+  tbody tr{display:grid;grid-template-columns:1fr auto;column-gap:12px;row-gap:5px;
+    grid-template-areas:"name date" "contact contact" "project project" "message message" "status actions";
+    padding:14px 2px;border-bottom:1px solid #1a1a1a;align-items:center}
+  td{display:block;padding:0;border:0}
+  td:nth-child(1){grid-area:name}
+  td:nth-child(2){grid-area:contact;font-size:12.5px}
+  td:nth-child(3){grid-area:project}
+  td:nth-child(4){grid-area:message}
+  td:nth-child(5){grid-area:status}
+  td:nth-child(6){grid-area:date;justify-self:end}
+  td:empty{display:none}
+  .cell-date{font-size:11px}
+  .cell-msg{max-width:100%;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-style:italic;color:#999}
+  .cell-project{display:inline-block;font-size:11px;color:var(--gold2);background:#151310;border:1px solid #242018;border-radius:5px;padding:3px 8px}
+  .cell-actions{grid-area:actions;justify-self:end}
+  .status-cell{justify-content:flex-start}
 }
 </style>
 </head>
@@ -148,14 +159,14 @@ function renderLeads(list){
     const color = STATUS_COLORS[status] || "#888";
     return `
     <tr data-id="${l.id}">
-      <td data-label="Nume"><span class="cell-name">${escapeHtml(l.name)}</span></td>
-      <td data-label="Contact">
+      <td><span class="cell-name">${escapeHtml(l.name)}</span></td>
+      <td>
         <a href="tel:${escapeHtml(l.phone)}">${escapeHtml(l.phone)}</a>
-        ${l.email ? `<br><a href="mailto:${escapeHtml(l.email)}">${escapeHtml(l.email)}</a>` : ""}
+        ${l.email ? ` · <a href="mailto:${escapeHtml(l.email)}">${escapeHtml(l.email)}</a>` : ""}
       </td>
-      <td data-label="Proiect">${l.project_type ? escapeHtml(l.project_type) : "—"}</td>
-      <td data-label="Mesaj"><span class="cell-msg" title="${escapeHtml(l.message||"")}">${l.message ? escapeHtml(l.message) : "—"}</span></td>
-      <td data-label="Status">
+      <td>${l.project_type ? `<span class="cell-project">${escapeHtml(l.project_type)}</span>` : ""}</td>
+      <td>${l.message ? `<span class="cell-msg" title="${escapeHtml(l.message)}">${escapeHtml(l.message)}</span>` : ""}</td>
+      <td>
         <div class="status-cell">
           <span class="dot" style="background:${color}"></span>
           <select class="status" data-id="${l.id}">
@@ -163,7 +174,7 @@ function renderLeads(list){
           </select>
         </div>
       </td>
-      <td data-label="Data"><span class="cell-date">${fmtDate(l.created_at)}</span></td>
+      <td><span class="cell-date">${fmtDate(l.created_at)}</span></td>
       <td class="cell-actions"><button class="del-btn" data-id="${l.id}" title="Șterge">${TRASH_ICON}</button></td>
     </tr>`;
   }).join("");
