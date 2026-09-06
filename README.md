@@ -5,7 +5,8 @@ Single-file static site (`index.html` + `politica-confidentialitate.html` + `img
 ## Resolved
 
 - ~~Lead form has no backend~~ — `leadForm` now inserts directly into a Supabase `leads` table via `supabase-js` (loaded from jsdelivr CDN). Verified end-to-end (`POST .../rest/v1/leads` → `201`). RLS policy allows public `insert` only — no public read/update/delete. View submissions in the Supabase dashboard → Table Editor → `leads`.
-- ~~No admin panel~~ — built `admin.html`: a login-gated dashboard (Supabase Auth) listing all leads live (Realtime subscription — new submissions appear without a refresh), with search and a status field (nou/contactat/ofertă trimisă/câștigat/pierdut) you can update per lead. Requires a one-time setup — see "Admin dashboard setup" below. Footer "Admin" link now points here instead of the old fake `localStorage` viewer.
+- ~~No admin panel~~ — built `admin.html`: a login-gated dashboard (Supabase Auth) listing all leads live (Realtime subscription — new submissions appear without a refresh). Redesigned as a minimal table (name/contact/project/message/status/date/delete), color-coded status dots, responsive fallback to labeled stacked rows on mobile. Delete requires two clicks (button turns into a 3-second "Confirmă" state) — no accidental deletes, no jarring native popup. Footer "Admin" link points here instead of the old fake `localStorage` viewer. Login setup and delete permission — see "Admin dashboard setup" below.
+- ~~Email-on-new-lead~~ — `supabase/functions/notify-lead` deployed and wired via a Database Webhook to Resend, verified end-to-end. Currently sends to the Resend account's signup email only (Resend sandbox limitation) — full detail in "Admin dashboard setup" below.
 - File upload field ("Fotografii / PDF") removed from the form for now rather than shipped non-functional — collecting files and silently dropping them would be worse than not offering it. Re-add once a Supabase Storage bucket + policies are wired (needs: bucket, upload-on-submit logic, `attachments` column on `leads`).
 - ~~Logo file was 5.3MB~~ — the source PNG (3168×3460, uncompressed) was loaded on every page. Cropped a favicon set from the monogram mark (`favicon.ico`, `favicon-32.png`, `favicon-180.png`) and downsized the header/footer logo to 412×450 (109KB) — comfortably crisp at its largest display size (180px in the footer) with 2x retina headroom. Wired favicon `<link>` tags into both `index.html` and `politica-confidentialitate.html`.
 
@@ -48,9 +49,12 @@ Single-file static site (`index.html` + `politica-confidentialitate.html` + `img
 
    create policy "Allow authenticated update"
      on public.leads for update to authenticated using (true) with check (true);
+
+   create policy "Allow authenticated delete"
+     on public.leads for delete to authenticated using (true);
    ```
 2. **Authentication → Users → Add user** — create your own login (email + password, check "Auto Confirm User"). That's what you log into `admin.html` with.
-3. **(Optional) Email-on-new-lead**: deploy `supabase/functions/notify-lead/index.ts` via Dashboard → Edge Functions (paste the code, deploy), sign up at resend.com (free tier) for an API key, set `RESEND_API_KEY` and `NOTIFY_TO` as function secrets, then Database → Webhooks → New → table `leads`, event `INSERT`, type "Supabase Edge Functions" → select `notify-lead`. Full instructions are in the file's header comment.
+3. ~~Email-on-new-lead~~ — **done**. `supabase/functions/notify-lead` is deployed, wired via a Database Webhook (table `leads`, event `INSERT`) to Resend. Verified end-to-end. Currently sends to the Resend account's own signup email (`damiansava4@gmail.com`) — Resend's sandbox mode only allows sending to that address until a domain is verified. Once `luxprogroup.md` is bought, verify it in Resend (Domains → Add Domain → add the DNS records), set `NOTIFY_FROM` to an address on that domain, and `NOTIFY_TO` can then be `LUXPROGROUP@GMAIL.COM` or anything else.
 
 ## Stack notes
 
