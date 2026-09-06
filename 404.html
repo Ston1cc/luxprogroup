@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pagină negăsită | LUXPRO GROUP</title>
+<meta name="robots" content="noindex,follow">
+<meta name="theme-color" content="#070707">
+<link rel="icon" href="img/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="img/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="img/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050505;--bg2:#0c0c0c;--card:#131313;--gold:#d9a63b;--gold2:#f4cf76;--muted:#aaa;--line:rgba(217,166,59,.28)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:#fff;font:15px/1.6 'Jost',Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column}a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}.container{width:min(1180px,92%);margin:auto}
+.top{display:none;height:34px;background:#000;border-bottom:1px solid #151515;color:#888;font-size:12px}.top .container{height:100%;display:flex;justify-content:flex-end;align-items:center;gap:20px}
+header{position:sticky;top:0;z-index:20;background:#050505eF;backdrop-filter:blur(14px);border-bottom:1px solid #171717}.nav{height:72px;display:flex;align-items:center;justify-content:space-between}.logo{height:58px}
+.links{display:flex;gap:14px;align-items:center;font-size:13px;position:relative}.links a{color:#ddd}.links a:hover{color:var(--gold2)}.links a:not(.cta){display:none}
+.links.open{position:fixed;top:72px;left:0;right:0;z-index:19;flex-direction:column;align-items:stretch;gap:0;background:#0a0a0a;border-bottom:1px solid #171717;padding:6px 5vw 16px;box-shadow:0 20px 30px -10px #000a;max-height:calc(100vh - 72px);overflow-y:auto}
+.links.open a:not(.cta){display:block;padding:14px 2px;border-bottom:1px solid #1a1a1a}.links.open .cta{margin-top:14px;text-align:center}
+.cta{border:1px solid var(--gold);padding:10px 20px;border-radius:999px;color:var(--gold2)!important;font:600 11px/1 'Jost',sans-serif;letter-spacing:1.6px;text-transform:uppercase;transition:.25s}.cta:hover{background:var(--gold);color:#050505!important}
+.menu{display:block;background:none;border:0;color:#fff;font-size:24px;line-height:1;padding:4px}
+.gold{color:var(--gold2)}.eyebrow{color:var(--gold2);text-transform:uppercase;letter-spacing:3px;font-size:11px;font-weight:700}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:15px 26px;border:1px solid var(--gold);border-radius:999px;font:600 12px/1 'Jost',sans-serif;letter-spacing:1.6px;text-transform:uppercase;cursor:pointer;transition:.3s cubic-bezier(.4,0,.2,1);white-space:nowrap}
+.primary{position:relative;overflow:hidden;background:linear-gradient(135deg,#b67c18,#f2c967);color:#050505;box-shadow:0 6px 20px -6px rgba(217,166,59,.5)}.primary:hover{transform:translateY(-2px);box-shadow:0 10px 26px -6px rgba(217,166,59,.65)}
+.primary::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-20deg);transition:left .7s cubic-bezier(.16,1,.3,1)}.primary:hover::after{left:120%}
+.outline{color:var(--gold2);background:transparent}.outline:hover{background:var(--gold);color:#050505;transform:translateY(-2px)}
+.btn:active{transform:translateY(0) scale(.98)}
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:60px 0;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 30%,#d9a63b14,transparent 60%),#050505}
+.err{text-align:center;max-width:560px;padding:0 6%}
+.err .num{font:400 clamp(90px,18vw,180px)/1 'Bodoni Moda',Georgia,serif;color:var(--gold2);letter-spacing:-4px;text-shadow:0 0 50px rgba(217,166,59,.3);margin:0}
+.err h1{font:400 clamp(24px,4vw,34px)/1.2 'Bodoni Moda',Georgia,serif;margin:8px 0 14px}
+.err p{color:#bbb;margin:0 0 30px}
+.err .buttons{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+footer{padding:42px 0 20px;background:#030303;border-top:1px solid #171717}.foot{display:grid;grid-template-columns:1fr;gap:30px;text-align:center}.foot img{width:180px}.foot p,.foot a{color:#888;font-size:13px}.copy{margin-top:25px;padding-top:16px;border-top:1px solid #171717;color:#555;font-size:11px}
+@media(min-width:901px){.top{display:block}.nav{height:88px}.logo{height:70px}.links{gap:22px}.links a:not(.cta){display:block}.links.open{position:static;flex-direction:row;background:none;border:0;padding:0;box-shadow:none;max-height:none;overflow:visible}.links.open a:not(.cta){padding:0;border:0}.links.open .cta{margin-top:0}.menu{display:none}.foot{grid-template-columns:1.3fr 1fr 1fr;text-align:left}}
+.ico{width:1em;height:1em;display:inline-block;vertical-align:-.15em;fill:currentColor;flex:none}.ico-lg{width:1em;height:1em}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+<symbol id="i-phone" viewBox="0 0 16 16"><path d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-.744.744c-.712.712-1.782 1.022-2.807.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.32-1.025-.01-2.095.703-2.807z"/></symbol>
+<symbol id="i-mail" viewBox="0 0 16 16"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741zM1 11.105l4.708-2.897L1 5.383z"/></symbol>
+<symbol id="i-menu" viewBox="0 0 16 16"><path d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/></symbol>
+<symbol id="i-home" viewBox="0 0 16 16"><path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 1 0 .708-.708zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/></symbol>
+</svg>
+
+<div class="top"><div class="container"><svg class="ico" aria-hidden="true"><use href="#i-phone"></use></svg> +373 611 41424 &nbsp; | &nbsp; <svg class="ico" aria-hidden="true"><use href="#i-mail"></use></svg> LUXPROGROUP@GMAIL.COM</div></div>
+<header><div class="container nav">
+<a href="index.html#home"><img class="logo" src="img/logo.png" alt="LUXPRO GROUP"></a>
+<nav class="links"><a href="index.html#servicii">Servicii</a><a href="index.html#portofoliu">Portofoliu</a><a href="index.html#de-ce-noi">De ce noi</a><a href="index.html#calculator">Calculator</a><a href="index.html#contact">Contact</a><a class="cta" href="index.html#oferta">Solicită ofertă</a></nav>
+<button class="menu" onclick="document.querySelector('.links').classList.toggle('open')"><svg class="ico ico-lg" aria-hidden="true"><use href="#i-menu"></use></svg></button>
+</div></header>
+
+<main>
+<div class="err">
+<div class="eyebrow">Eroare 404</div>
+<p class="num">404</p>
+<h1>Pagina nu a fost găsită.</h1>
+<p>Se pare că link-ul este greșit sau pagina a fost mutată. Hai să te ducem înapoi la ceva util.</p>
+<div class="buttons">
+<a class="btn primary" href="index.html"><svg class="ico" aria-hidden="true"><use href="#i-home"></use></svg> Pagina principală</a>
+<a class="btn outline" href="tel:+37361141424"><svg class="ico" aria-hidden="true"><use href="#i-phone"></use></svg> +373 611 41424</a>
+</div>
+</div>
+</main>
+
+<footer><div class="container foot"><div><img src="img/logo.png" alt="LUXPRO GROUP"><p>Transformăm spații, creăm confort!</p></div><div><h4>Servicii</h4><p>Renovări • Reparații • Finisaje</p><p>Instalații • Design • Proiectare</p><p>Amenajări comerciale</p></div><div><h4>Contact</h4><p>+373 611 41424</p><p>LUXPROGROUP@GMAIL.COM</p><p>luxprogroup.md</p></div></div><div class="container copy">© 2026 LUXPRO GROUP. Toate drepturile rezervate. | <a href="politica-confidentialitate.html">Politica de confidențialitate</a></div></footer>
+
+<script>
+document.querySelectorAll(".links a").forEach(a=>a.addEventListener("click",()=>document.querySelector(".links").classList.remove("open")));
+</script>
+</body>
+</html>

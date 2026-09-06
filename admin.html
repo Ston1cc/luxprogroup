@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin | LUXPRO GROUP</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#070707">
+<link rel="icon" href="img/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="img/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="img/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050505;--gold:#d9a63b;--gold2:#f4cf76;--muted:#aaa;--line:rgba(217,166,59,.28)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:#fff;font:15px/1.6 'Jost',Arial,sans-serif;min-height:100vh}
+a{color:inherit}button,input,select,textarea{font:inherit}
+.container{width:min(1180px,92%);margin:auto}
+header{padding:20px 0;border-bottom:1px solid #171717;display:flex;align-items:center;justify-content:space-between}
+.logo{height:44px}
+.brand{display:flex;align-items:center;gap:12px;font:600 12px/1 'Jost',sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border:1px solid var(--gold);border-radius:999px;font:600 11px/1 'Jost',sans-serif;letter-spacing:1.4px;text-transform:uppercase;cursor:pointer;background:none;color:var(--gold2);transition:.2s}
+.btn:hover{background:var(--gold);color:#050505}
+.btn:disabled{opacity:.5;cursor:default}
+.primary{background:linear-gradient(135deg,#b67c18,#f2c967);color:#050505;border-color:transparent}
+.primary:hover{background:linear-gradient(135deg,#b67c18,#f2c967);color:#050505;opacity:.9}
+
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-box{width:100%;max-width:380px;background:linear-gradient(160deg,#181209,#0c0c0c);border:1px solid var(--line);border-radius:14px;padding:36px 30px;text-align:center}
+.login-box img{height:60px;margin-bottom:18px}
+.login-box h1{font:400 26px 'Bodoni Moda',Georgia,serif;margin:0 0 22px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;text-align:left}
+label{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#aaa}
+input{background:#101010;color:#fff;border:1px solid #242424;border-radius:10px;padding:13px 14px;outline:none;font-size:16px;width:100%}
+input:focus{border-color:var(--gold)}
+.error{color:#e77;font-size:13px;margin:10px 0 0;display:none}
+
+#dash{display:none}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:20px 0}
+.toolbar input[type=search]{flex:1;min-width:180px}
+.count{color:var(--muted);font-size:13px;white-space:nowrap}
+.leads{display:flex;flex-direction:column;gap:10px;padding-bottom:60px}
+.lead-card{background:#101010;border:1px solid #202020;border-radius:10px;padding:16px 18px;display:grid;gap:10px}
+.lead-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.lead-name{font:600 15px 'Jost',sans-serif}
+.lead-date{color:var(--muted);font-size:12px}
+.lead-row{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:#ccc}
+.lead-row a{color:var(--gold2)}
+.lead-msg{color:#bbb;font-size:13px;white-space:pre-wrap}
+select.status{background:#151515;color:var(--gold2);border:1px solid #242424;border-radius:999px;padding:7px 14px;font:600 11px/1 'Jost',sans-serif;letter-spacing:.8px;text-transform:uppercase;width:fit-content}
+.empty{text-align:center;color:var(--muted);padding:60px 0}
+@media(min-width:701px){.lead-top{align-items:center}}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <div class="login-box">
+    <img src="img/logo.png" alt="LUXPRO GROUP">
+    <h1>Admin</h1>
+    <form id="loginForm">
+      <div class="field"><label>Email</label><input type="email" id="loginEmail" required autocomplete="username"></div>
+      <div class="field"><label>Parolă</label><input type="password" id="loginPass" required autocomplete="current-password"></div>
+      <button class="btn primary" type="submit" style="width:100%" id="loginBtn">Autentificare</button>
+      <p class="error" id="loginError">Email sau parolă incorectă.</p>
+    </form>
+  </div>
+</div>
+
+<div id="dash">
+  <div class="container">
+    <header>
+      <div class="brand"><img class="logo" src="img/logo.png" alt="LUXPRO GROUP">Panou leads</div>
+      <button class="btn" id="logoutBtn">Deconectare</button>
+    </header>
+    <div class="toolbar">
+      <input type="search" id="search" placeholder="Caută după nume, telefon sau email...">
+      <span class="count" id="count">0 lead-uri</span>
+    </div>
+    <div class="leads" id="leads"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb = supabase.createClient(
+  "https://mdmrnqlqakojxuohxjyr.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kbXJucWxxYWtvanh1b2h4anlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg2ODgwMTksImV4cCI6MjEwNDI2NDAxOX0.gQGborrMgBcIVCxwtN_5TvMzD45qqxf6OiXKrjhkPzM"
+);
+
+const STATUSES = ["nou","contactat","ofertă trimisă","câștigat","pierdut"];
+let allLeads = [];
+
+function fmtDate(iso){
+  return new Date(iso).toLocaleString("ro-RO",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
+}
+
+function renderLeads(list){
+  const box = document.getElementById("leads");
+  document.getElementById("count").textContent = list.length + (list.length===1?" lead":" lead-uri");
+  if(!list.length){ box.innerHTML = '<div class="empty">Niciun lead găsit.</div>'; return; }
+  box.innerHTML = list.map(l => `
+    <div class="lead-card" data-id="${l.id}">
+      <div class="lead-top">
+        <span class="lead-name">${escapeHtml(l.name)}</span>
+        <span class="lead-date">${fmtDate(l.created_at)}</span>
+      </div>
+      <div class="lead-row">
+        <a href="tel:${escapeHtml(l.phone)}">${escapeHtml(l.phone)}</a>
+        ${l.email ? `<a href="mailto:${escapeHtml(l.email)}">${escapeHtml(l.email)}</a>` : ""}
+        ${l.project_type ? `<span>${escapeHtml(l.project_type)}</span>` : ""}
+      </div>
+      ${l.message ? `<div class="lead-msg">${escapeHtml(l.message)}</div>` : ""}
+      <select class="status" data-id="${l.id}">
+        ${STATUSES.map(s => `<option value="${s}" ${s===(l.status||"nou")?"selected":""}>${s}</option>`).join("")}
+      </select>
+    </div>
+  `).join("");
+  box.querySelectorAll(".status").forEach(sel => {
+    sel.addEventListener("change", async (e) => {
+      const id = e.target.dataset.id, status = e.target.value;
+      const { error } = await sb.from("leads").update({ status }).eq("id", id);
+      if(error) console.error(error);
+      const lead = allLeads.find(x => x.id === id);
+      if(lead) lead.status = status;
+    });
+  });
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function applyFilter(){
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  if(!q){ renderLeads(allLeads); return; }
+  renderLeads(allLeads.filter(l =>
+    (l.name||"").toLowerCase().includes(q) ||
+    (l.phone||"").toLowerCase().includes(q) ||
+    (l.email||"").toLowerCase().includes(q)
+  ));
+}
+document.getElementById("search").addEventListener("input", applyFilter);
+
+async function loadLeads(){
+  const { data, error } = await sb.from("leads").select("*").order("created_at", { ascending: false });
+  if(error){ console.error(error); return; }
+  allLeads = data;
+  applyFilter();
+}
+
+function showDash(){
+  document.getElementById("login").style.display = "none";
+  document.getElementById("dash").style.display = "block";
+  loadLeads();
+  sb.channel("leads-live")
+    .on("postgres_changes", { event: "*", schema: "public", table: "leads" }, () => loadLeads())
+    .subscribe();
+}
+
+function showLogin(){
+  document.getElementById("dash").style.display = "none";
+  document.getElementById("login").style.display = "flex";
+}
+
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById("loginBtn"), err = document.getElementById("loginError");
+  btn.disabled = true; err.style.display = "none";
+  const { error } = await sb.auth.signInWithPassword({
+    email: document.getElementById("loginEmail").value,
+    password: document.getElementById("loginPass").value
+  });
+  btn.disabled = false;
+  if(error){ err.style.display = "block"; return; }
+  showDash();
+});
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  await sb.auth.signOut();
+  showLogin();
+});
+
+sb.auth.getSession().then(({ data: { session } }) => {
+  if(session) showDash(); else showLogin();
+});
+</script>
+</body>
+</html>
