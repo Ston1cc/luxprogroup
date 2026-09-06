@@ -9,6 +9,7 @@ Single-file static site (`index.html` + `politica-confidentialitate.html` + `img
 - ~~Email-on-new-lead~~ — `supabase/functions/notify-lead` deployed and wired via a Database Webhook to Resend, verified end-to-end. Currently sends to the Resend account's signup email only (Resend sandbox limitation) — full detail in "Admin dashboard setup" below.
 - File upload field ("Fotografii / PDF") removed from the form for now rather than shipped non-functional — collecting files and silently dropping them would be worse than not offering it. Re-add once a Supabase Storage bucket + policies are wired (needs: bucket, upload-on-submit logic, `attachments` column on `leads`).
 - ~~Logo file was 5.3MB~~ — the source PNG (3168×3460, uncompressed) was loaded on every page. Cropped a favicon set from the monogram mark (`favicon.ico`, `favicon-32.png`, `favicon-180.png`) and downsized the header/footer logo to 412×450 (109KB) — comfortably crisp at its largest display size (180px in the footer) with 2x retina headroom. Wired favicon `<link>` tags into both `index.html` and `politica-confidentialitate.html`.
+- **`index.html` UI reverted to the client-supplied skeleton** — client wanted the original look back (Georgia/Arial fonts, plain buttons, no animations, no mobile-first redesign, no calculator stepper/tier-card redesign), with only the services content updated. Rebuilt `index.html` from the skeleton file, keeping: the curated services tabs/accordion (flat list would be 56 items — the bloat the client explicitly rejected earlier), the calculator's real pricing data (ECO/Standard/Premium/Luxury × Manoperă/Manoperă+materiale, shown inline in the level dropdown), the real Supabase form wiring, the satellite (non-grayscale) map. Also kept two invisible functional fixes: the mobile hamburger menu (skeleton's `.open` class had zero CSS, so it visibly did nothing) and 16px input font-size (prevents iOS Safari auto-zoom on focus). `admin.html`/`404.html`/`politica-confidentialitate.html` were left untouched per client's choice, so they still use the newer font/button style — a visible inconsistency between the homepage and those utility pages, worth revisiting if it bothers the client.
 
 ## Blockers (must-fix before launch)
 
@@ -26,7 +27,7 @@ Single-file static site (`index.html` + `politica-confidentialitate.html` + `img
 10. **Analytics** — no GA4/Plausible/Clarity wired in; launching blind to traffic and conversion behavior.
 11. **Cookie consent banner** — the privacy policy mentions cookies/Google Maps; no actual consent mechanism exists yet for non-essential cookies.
 12. **Legal entity details** — the privacy policy has no registration/IDNO number since none was provided; add it if LUXPRO GROUP is a registered SRL, for legal completeness.
-13. **Delete the test lead row** — a "Test Claude" row was inserted into `leads` while verifying the Supabase wiring; delete it via Table Editor before going live.
+13. **Delete the test lead rows** — "Test Claude", "Test Notificare Email", "Curl Test", "Curl Test 2", and "Test Skeleton Revert" were all inserted into `leads` while verifying the Supabase wiring at various points; delete them via Table Editor before going live.
 14. **Finish admin dashboard setup** — see "Admin dashboard setup" below; the code is done but needs a one-time Supabase config step from you.
 15. **Confirm hosting serves `404.html` on not-found routes** — the page exists and looks right, but most static hosts need explicit config to actually serve it on a 404 (Netlify/Vercel auto-detect a root `404.html`; Apache needs `ErrorDocument 404 /404.html`; Nginx needs `error_page 404 /404.html`). Check once you know where this deploys.
 
@@ -63,3 +64,6 @@ Single-file static site (`index.html` + `politica-confidentialitate.html` + `img
 - Icons: inline SVG sprite, no icon font/library.
 - Backend: Supabase. Project ref `mdmrnqlqakojxuohxjyr`. `leads` table, RLS on. Public role: `insert`-only. Authenticated role (via `admin.html` login): `select`/`update`. Client uses the `anon` public key (safe to expose — RLS is what enforces access, not key secrecy) via `supabase-js` from jsdelivr CDN.
 - `admin.html`: Supabase Auth (email/password) gated dashboard, Realtime-subscribed to `leads` for live updates.
+
+!! culori de trimise modele
+!! buton de a trimite mesaje 
