@@ -67,3 +67,5 @@ Single-file static site (`index.html` + `politica-confidentialitate.html` + `img
 
 !! culori de trimise modele
 !! buton de a trimite mesaje 
+
+It lets you create a single floating button that, when clicked, expands into a clean menu featuring choices like WhatsApp, FB Messenger, Email, or a direct phone call. 
