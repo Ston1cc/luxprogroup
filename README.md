@@ -7,9 +7,12 @@ Single-file static site (`index.html` + `politica-confidentialitate.html` + `img
 - ~~Lead form has no backend~~ — `leadForm` now inserts directly into a Supabase `leads` table via `supabase-js` (loaded from jsdelivr CDN). Verified end-to-end (`POST .../rest/v1/leads` → `201`). RLS policy allows public `insert` only — no public read/update/delete. View submissions in the Supabase dashboard → Table Editor → `leads`.
 - ~~No admin panel~~ — built `admin.html`: a login-gated dashboard (Supabase Auth) listing all leads live (Realtime subscription — new submissions appear without a refresh). Redesigned as a minimal table (name/contact/project/message/status/date/delete), color-coded status dots, responsive fallback to labeled stacked rows on mobile. Delete requires two clicks (button turns into a 3-second "Confirmă" state) — no accidental deletes, no jarring native popup. Footer "Admin" link points here instead of the old fake `localStorage` viewer. Login setup and delete permission — see "Admin dashboard setup" below.
 - ~~Email-on-new-lead~~ — `supabase/functions/notify-lead` deployed and wired via a Database Webhook to Resend, verified end-to-end. Currently sends to the Resend account's signup email only (Resend sandbox limitation) — full detail in "Admin dashboard setup" below.
-- File upload field ("Fotografii / PDF") removed from the form for now rather than shipped non-functional — collecting files and silently dropping them would be worse than not offering it. Re-add once a Supabase Storage bucket + policies are wired (needs: bucket, upload-on-submit logic, `attachments` column on `leads`).
+- File upload field ("Fotografii / PDF") removed from the form — collecting files and silently dropping them would be worse than not offering it. Decision: skipped for now, not planned short-term (would need a Supabase Storage bucket + policies, upload-on-submit logic, `attachments` column on `leads`, and client-side image compression to stay within the free-tier 1GB storage cap — cap doesn't reset monthly, unlike the 5GB bandwidth allowance).
 - ~~Logo file was 5.3MB~~ — the source PNG (3168×3460, uncompressed) was loaded on every page. Cropped a favicon set from the monogram mark (`favicon.ico`, `favicon-32.png`, `favicon-180.png`) and downsized the header/footer logo to 412×450 (109KB) — comfortably crisp at its largest display size (180px in the footer) with 2x retina headroom. Wired favicon `<link>` tags into both `index.html` and `politica-confidentialitate.html`.
 - **`index.html` UI reverted to the client-supplied skeleton** — client wanted the original look back (Georgia/Arial fonts, plain buttons, no animations, no mobile-first redesign, no calculator stepper/tier-card redesign), with only the services content updated. Rebuilt `index.html` from the skeleton file, keeping: the curated services tabs/accordion (flat list would be 56 items — the bloat the client explicitly rejected earlier), the calculator's real pricing data (ECO/Standard/Premium/Luxury × Manoperă/Manoperă+materiale, shown inline in the level dropdown), the real Supabase form wiring, the satellite (non-grayscale) map. Also kept two invisible functional fixes: the mobile hamburger menu (skeleton's `.open` class had zero CSS, so it visibly did nothing) and 16px input font-size (prevents iOS Safari auto-zoom on focus). `admin.html`/`404.html`/`politica-confidentialitate.html` were left untouched per client's choice, so they still use the newer font/button style — a visible inconsistency between the homepage and those utility pages, worth revisiting if it bothers the client.
+- **Brand color palette — "Marmură & Negru"** — replaced every hardcoded hex color across `index.html` (not just the CSS variables) with a champagne-gold-on-near-black palette (`--gold:#BFA06A`, `--gold2:#E4D3A8`, base `#0A0A0A`, warm off-white text `#F5F3EE`). Chosen by the client after comparing several palette rounds. `img/logo.png` and the favicon set still carry the old bright-gold color baked into the raster — not yet recolored to match (open item below).
+- **Floating quick-contact button** — bottom-right FAB on `index.html`, expands into WhatsApp / Viber / Messenger / Email / Call, each with a proper inline SVG icon (no emoji). Messenger links to the real page (`m.me/61592646300930`, from `facebook.com/profile.php?id=61592646300930`); Instagram (`instagram.com/luxprogroup`) was shared but not wired anywhere yet.
+- Hero badge text updated to "Reparații la cheie • Construcții la cheie".
 
 ## Blockers (must-fix before launch)
 
@@ -34,8 +37,10 @@ Single-file static site (`index.html` + `politica-confidentialitate.html` + `img
 ## Nice-to-have (post-launch fine)
 
 16. Language switcher UI — the `lang()` JS function and RO/RU/EN content already exist but there's no visible button to trigger it.
-17. WhatsApp/Viber/Telegram links are unverified on real devices — deep-link schemes behave differently per OS.
+17. WhatsApp/Viber/Messenger links (contact section + new floating button) are unverified on real devices — deep-link schemes behave differently per OS.
 18. Performance pass (Lighthouse) once real images are in — currently artificially fast because Unsplash images are lazy-loaded and modest in size.
+19. Recolor `img/logo.png` (and the favicon set cropped from it) to match the new "Marmură & Negru" champagne accent — currently still the old bright gold, a visible mismatch against the rest of the page.
+20. Instagram (`instagram.com/luxprogroup`) not linked anywhere on the site yet — only Facebook/WhatsApp/Viber/Messenger/Email/phone are.
 
 ## Admin dashboard setup
 
@@ -64,8 +69,3 @@ Single-file static site (`index.html` + `politica-confidentialitate.html` + `img
 - Icons: inline SVG sprite, no icon font/library.
 - Backend: Supabase. Project ref `mdmrnqlqakojxuohxjyr`. `leads` table, RLS on. Public role: `insert`-only. Authenticated role (via `admin.html` login): `select`/`update`. Client uses the `anon` public key (safe to expose — RLS is what enforces access, not key secrecy) via `supabase-js` from jsdelivr CDN.
 - `admin.html`: Supabase Auth (email/password) gated dashboard, Realtime-subscribed to `leads` for live updates.
-
-!! culori de trimise modele
-!! buton de a trimite mesaje 
-
-It lets you create a single floating button that, when clicked, expands into a clean menu featuring choices like WhatsApp, FB Messenger, Email, or a direct phone call. 
